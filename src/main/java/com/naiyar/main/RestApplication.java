@@ -1,36 +1,51 @@
 package com.naiyar.main;
 
-import com.naiyar.service.HelloService;
-import org.apache.cxf.Bus;
-import org.apache.cxf.endpoint.Server;
-import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
-import org.apache.cxf.jaxrs.swagger.Swagger2Feature;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by vikasnaiyar on 11/10/16.
  */
 @SpringBootApplication
+@Configuration
+@ComponentScan(basePackages = {"com.naiyar"})
+@EntityScan(basePackages = {"com.naiyar.domain"})
+@EnableJpaRepositories(basePackages = {"com.naiyar.repository"})
+@EnableTransactionManagement
 public class RestApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(RestApplication.class,args);
     }
 
-    @Autowired
-    private Bus bus;
+    @Bean
+    @ConditionalOnMissingBean
+    public JacksonJsonProvider jsonProvider(ObjectMapper objectMapper) {
+        JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
+        provider.setMapper(objectMapper);
+        return provider;
+    }
 
     @Bean
-    public Server rsServer() {
-        JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
-        endpoint.setBus(bus);
-        endpoint.setAddress("/");
-        endpoint.setServiceBeans(Arrays.<Object>asList(new HelloService()));
-        endpoint.setFeatures(Arrays.asList(new Swagger2Feature()));
-        return endpoint.create();
+    @ConditionalOnMissingBean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }
