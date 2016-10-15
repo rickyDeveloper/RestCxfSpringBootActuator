@@ -1,5 +1,6 @@
 package com.naiyar.service.impl;
 
+import com.naiyar.cache.MongoProductCache;
 import com.naiyar.domain.MongoProduct;
 import com.naiyar.model.MongoProductVO;
 import com.naiyar.repository.MongoProductRepository;
@@ -15,12 +16,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class MongoProductServiceImpl implements MongoProductService{
     @Autowired
-    private MongoProductRepository mongoProductRepository;
+    private MongoProductCache mongoProductCache;
+
 
     public MongoProductVO findProductsById(String id) {
         log.info("Fetching product from db with id = {} ", id);
         MongoProductVO productVO = null;
-        MongoProduct product = mongoProductRepository.findOne(id);
+        MongoProduct product = mongoProductCache.getProduct(id);
         if (product != null) {
             log.info("Product found with id = {}", id);
             productVO = new MongoProductVO();
@@ -41,7 +43,7 @@ public class MongoProductServiceImpl implements MongoProductService{
             MongoProduct product = null;
             if (productVO.getId() != null) {
                 log.info("Looking up for product in db for id = {}", productVO.getId());
-                product = mongoProductRepository.findOne(productVO.getId().toString());
+                product = mongoProductCache.getProduct(productVO.getId().toString());
             }
 
             if (product == null) {
@@ -51,7 +53,8 @@ public class MongoProductServiceImpl implements MongoProductService{
             product.setPrice(productVO.getPrice());
             product.setRating(productVO.getRating());
 
-            mongoProductRepository.save(product);
+            // Add product to cache
+            mongoProductCache.saveProduct(product);
 
             productVO.setId(product.getId());
         } else {
