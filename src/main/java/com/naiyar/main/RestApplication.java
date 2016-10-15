@@ -7,18 +7,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by vikasnaiyar on 11/10/16.
@@ -28,6 +22,7 @@ import java.util.List;
 @ComponentScan(basePackages = {"com.naiyar"})
 @EntityScan(basePackages = {"com.naiyar.domain"})
 @EnableJpaRepositories(basePackages = {"com.naiyar.repository"})
+@EnableMongoRepositories(basePackages = {"com.naiyar.repository"})
 @EnableTransactionManagement
 public class RestApplication {
 

@@ -1,7 +1,8 @@
 package com.naiyar.controller;
 
-import com.naiyar.model.ProductVO;
-import com.naiyar.service.ProductService;
+
+import com.naiyar.model.MongoProductVO;
+import com.naiyar.service.MongoProductService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,34 +14,33 @@ import javax.ws.rs.core.MediaType;
 /**
  * Created by vikasnaiyar on 15/10/16.
  */
-
 @Slf4j
-@Path("/product")
+@Path("/mongo/product")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Setter
 @Component
-public class ProductController {
+public class MongoProductController {
 
     @Autowired
-    private ProductService productService;
+    private MongoProductService mongoProductService;
 
     @GET
     @Path("/{id}")
-    public ProductVO getProduct(@PathParam("id") Long id) {
+    public MongoProductVO getProduct(@PathParam("id") String id) {
         log.info("Fetching product with id = {}", id);
-        ProductVO vo = null;
+        MongoProductVO vo = null;
         if (id != null) {
-            vo = productService.findProductsById(id);
+            vo = mongoProductService.findProductsById(id);
         }
 
         return vo;
     }
 
     @POST
-    public ProductVO createProducts(ProductVO productVO) {
+    public MongoProductVO createProducts(MongoProductVO productVO) {
         log.info("Saving product to database");
-        ProductVO vo = productService.saveProduct(productVO);
+        MongoProductVO vo = mongoProductService.saveProduct(productVO);
         return vo;
     }
 
