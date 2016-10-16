@@ -2,8 +2,12 @@ package com.naiyar.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 
@@ -13,7 +17,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-//@Table(name="products")
+@Table(name="products")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "products")
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -68,6 +68,8 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-starter-cache")
 
+    compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.1.0.Final'
+
     compile files("${System.properties['java.home']}/lib/tools.jar")
 
     providedCompile("org.projectlombok:lombok:1.16.10")
