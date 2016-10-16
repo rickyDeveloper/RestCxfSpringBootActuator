@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
             product.setPrice(productVO.getPrice());
             product.setRating(productVO.getRating());
 
-            productRepository.save(product);
+            product = productRepository.save(product);
 
             productVO.setId(product.getId());
         } else {
