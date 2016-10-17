@@ -1,6 +1,7 @@
 package com.naiyar.service;
 
 
+import com.naiyar.cache.ProductCache;
 import com.naiyar.config.ProductServiceConfig;
 import com.naiyar.domain.Product;
 import com.naiyar.model.ProductVO;

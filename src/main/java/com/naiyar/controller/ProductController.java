@@ -1,5 +1,6 @@
 package com.naiyar.controller;
 
+
 import com.naiyar.model.ProductVO;
 import com.naiyar.service.ProductService;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Collection;
 
 /**
  * Created by vikasnaiyar on 15/10/16.
@@ -37,11 +39,27 @@ public class ProductController {
         return vo;
     }
 
+    @GET
+    @Path("/all")
+    public Collection<ProductVO> getProducts() {
+        log.info("Fetching allproduct");
+        return productService.getAllProducts();
+    }
+
+    @GET
+    @Path("/query")
+    public Collection<ProductVO> getMathingProducts(@QueryParam(value = "text") String searchText) {
+        log.info("Searching allproduct");
+        return productService.getMatchingProducts(searchText);
+    }
+
     @POST
     public ProductVO createProducts(ProductVO productVO) {
         log.info("Saving product to database");
         ProductVO vo = productService.saveProduct(productVO);
         return vo;
     }
+
+
 
 }
